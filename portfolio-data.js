@@ -58,22 +58,6 @@ window.PORTFOLIO = {
     ],
     video: [
       {
-        title: "Video Editing + Instagram",
-        subtitle: "Photoshop + Ableton Live",
-        service: "Song: Killa social media edit",
-        ratio: "portrait",
-        embed: "https://www.instagram.com/reel/BEhxyaLvNp5/embed/",
-        href: "https://www.instagram.com/reel/BEhxyaLvNp5/",
-      },
-      {
-        title: "Video Editing + Instagram",
-        subtitle: "Photoshop + AI + Ableton Live",
-        service: "Song: Cash Out social media edit",
-        ratio: "portrait",
-        embed: "https://www.instagram.com/reel/DQseI0JASlI/embed/",
-        href: "https://www.instagram.com/reel/DQseI0JASlI/",
-      },
-      {
         title: "Video Editing + YouTube",
         subtitle: "Canva + AI + Ableton Live",
         service: "Song: Next Hellifornia YouTube edit",
@@ -90,6 +74,22 @@ window.PORTFOLIO = {
         embed: "https://www.youtube-nocookie.com/embed/oUZAfSvIqy8",
         href: "https://www.youtube.com/watch?v=oUZAfSvIqy8",
         thumb: "https://i.ytimg.com/vi/oUZAfSvIqy8/maxresdefault.jpg",
+      },
+      {
+        title: "Video Editing + Instagram",
+        subtitle: "Photoshop + Ableton Live",
+        service: "Song: Killa social media edit",
+        ratio: "portrait",
+        embed: "https://www.instagram.com/reel/BEhxyaLvNp5/embed/",
+        href: "https://www.instagram.com/reel/BEhxyaLvNp5/",
+      },
+      {
+        title: "Video Editing + Instagram",
+        subtitle: "Photoshop + AI + Ableton Live",
+        service: "Song: Cash Out social media edit",
+        ratio: "portrait",
+        embed: "https://www.instagram.com/reel/DQseI0JASlI/embed/",
+        href: "https://www.instagram.com/reel/DQseI0JASlI/",
       },
     ],
     audio: [
