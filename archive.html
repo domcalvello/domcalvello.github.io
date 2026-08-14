@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Full Archive — DOM:CLOUD</title>
+    <meta
+      name="description"
+      content="The extended visual archive of Domenick Calvello: web, graphic design, and AI-assisted image-making."
+    />
+    <meta name="theme-color" content="#01070b" />
+    <link rel="icon" href="images/favicon.ico" sizes="any" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="archive.css" />
+    <script src="portfolio-data.js" defer></script>
+    <script src="archive.js" defer></script>
+  </head>
+  <body class="archive-page" data-page="archive">
+    <a class="skip-link" href="#archiveGrid">Skip to archive grid</a>
+    <header class="site-header archive-mode">
+      <a class="wordmark" href="index.html">DOM:CLOUD</a>
+      <nav class="desktop-nav" aria-label="Archive navigation">
+        <a href="index.html#selected-work">Selected Work</a>
+        <a href="index.html#resume">Résumé</a>
+        <a href="index.html#resume">Contact</a>
+      </nav>
+      <a class="archive-close" href="index.html#selected-work" aria-label="Return to selected work">×</a>
+    </header>
+
+    <main class="archive-index">
+      <header class="archive-index-header">
+        <p class="eyebrow">Extended index / Cloud node 04</p>
+        <h1 class="glitch-title" data-text="THE FULL ARCHIVE" aria-label="The Full Archive">THE FULL ARCHIVE</h1>
+        <div class="archive-index-lede">
+          <p>
+            An expanded collection of graphic design, web projects, and AI-assisted visual
+            experiments. Filter the system or scan the complete stream.
+          </p>
+          <span id="resultCount" aria-live="polite"></span>
+        </div>
+      </header>
+
+      <div class="archive-filter-wrap">
+        <div class="archive-filters" role="group" aria-label="Filter archive">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="web" aria-pressed="false">Web <span>05</span></button>
+          <button type="button" data-filter="traditional" aria-pressed="false">Graphic <span>31</span></button>
+          <button type="button" data-filter="ai" aria-pressed="false">AI-assisted <span>117</span></button>
+        </div>
+        <label class="family-filter">
+          <span>Visual family</span>
+          <select id="familySelect">
+            <option value="all">All families</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="archive-stream-line" aria-hidden="true">
+        <span>QUERY ARCHIVE_INDEX</span><span>STREAM DATA</span><span>PACKETS ACCEPTED</span>
+      </div>
+
+      <section class="archive-gallery" id="archiveGrid" aria-label="Complete portfolio archive"></section>
+
+      <footer class="archive-index-footer">
+        <span>END OF STREAM</span>
+        <a href="index.html#resume">DOM:CLOUD recovered →</a>
+      </footer>
+    </main>
+
+    <dialog class="lightbox" id="archiveLightbox" aria-labelledby="archiveLightboxTitle">
+      <button class="lightbox-close" type="button" aria-label="Close image viewer">×</button>
+      <button class="lightbox-arrow lightbox-prev" type="button" aria-label="Previous image">←</button>
+      <figure>
+        <img id="archiveLightboxImage" alt="" />
+        <figcaption>
+          <span id="archiveLightboxMeta"></span>
+          <strong id="archiveLightboxTitle"></strong>
+        </figcaption>
+      </figure>
+      <button class="lightbox-arrow lightbox-next" type="button" aria-label="Next image">→</button>
+    </dialog>
+  </body>
+</html>
