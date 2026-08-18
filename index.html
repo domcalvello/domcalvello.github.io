@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Domenick Calvello Portfolio</title>
+    <title>Domenick Calvello — DOM:CLOUD</title>
     <meta
       name="description"
       content="The selected work of Domenick Calvello — web development, graphic design, AI-assisted artwork, video, and sound."
@@ -11,11 +11,11 @@
     <meta name="theme-color" content="#e9e6df" />
     <link rel="canonical" href="https://domcalvello.github.io/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Domenick Calvello Portfolio" />
+    <meta property="og:title" content="Domenick Calvello — DOM:CLOUD" />
     <meta property="og:description" content="Digital designer and front-end developer. Enter the archive." />
     <meta property="og:image" content="https://domcalvello.github.io/images/banner.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Domenick Calvello Portfolio" />
+    <meta name="twitter:title" content="Domenick Calvello — DOM:CLOUD" />
     <meta name="twitter:description" content="Digital designer and front-end developer. Enter the archive." />
     <meta name="twitter:image" content="https://domcalvello.github.io/images/banner.webp" />
     <link rel="icon" href="images/favicon.ico" sizes="any" />
@@ -26,6 +26,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="image-manifest.js" defer></script>
     <script src="portfolio-data.js" defer></script>
     <script src="script.js" defer></script>
   </head>
@@ -35,13 +36,14 @@
     <header class="site-header" id="siteHeader">
       <a class="wordmark" href="#home" aria-label="DOM:CLOUD home">DOM:ClOUD</a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="#selected-work">Archive</a>
+        <a class="active" href="#selected-work" aria-current="page">Archive</a>
         <a href="#web">Web</a>
         <a href="#graphic">Graphic</a>
         <a href="#video">Video</a>
         <a href="#audio">Audio</a>
         <a href="#resume">Résumé</a>
       </nav>
+      <a class="header-contact" href="mailto:domcalvello@gmail.com">Contact</a>
       <button
         class="menu-toggle"
         type="button"
@@ -52,7 +54,7 @@
         <span></span><span></span>
       </button>
       <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" inert hidden>
-        <a href="#selected-work">Archive</a>
+        <a class="active" href="#selected-work" aria-current="page">Archive</a>
         <a href="#web">Web</a>
         <a href="#graphic">Graphic</a>
         <a href="#video">Video</a>
@@ -64,15 +66,21 @@
     <main>
       <section class="hero-sequence" id="home" aria-label="DOM:CLOUD introduction">
         <div class="hero-sticky">
-          <img
-            class="hero-layer hero-clean"
-            src="images/banner.webp"
-            alt="DOM:CLOUD above a field of clouds at sunrise"
-            width="1672"
-            height="941"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <picture>
+            <source media="(max-width: 767px)" srcset="images/hero/banner-960.webp" />
+            <source media="(max-width: 1199px)" srcset="images/hero/banner-1600.webp" />
+            <source media="(max-width: 1799px)" srcset="images/hero/banner-1920.webp" />
+            <source media="(min-width: 1800px)" srcset="images/hero/banner-2560.webp" />
+            <img
+              class="hero-layer hero-clean"
+              src="images/hero/banner-960.webp"
+              alt="DOM:CLOUD above a field of clouds at sunrise"
+              width="960"
+              height="540"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
           <div class="hero-layer hero-darken" aria-hidden="true"></div>
           <div class="hero-layer hero-corruption" aria-hidden="true"></div>
           <div class="hero-layer hero-noise" aria-hidden="true"></div>
@@ -80,7 +88,9 @@
             <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
           </div>
           <div class="hero-copy">
-            <p class="hero-kicker status-indicator" aria-live="polite"><span>Status: Online</span><i aria-hidden="true"></i></p>
+            <p class="hero-kicker status-indicator" aria-live="polite">
+  <span id="statusText">Status: Online</span><i id="statusDot" class="status-dot online" aria-hidden="true"></i>
+</p>
             <div class="hero-byline">
               <span>Domenick Calvello</span>
               <span>Digital Designer + Front-End Developer</span>
@@ -108,7 +118,7 @@
           <header class="archive-header">
             <div class="archive-heading-block">
               <div class="archive-branding">
-                <img class="corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="Corrupted DOM:CLOUD logo" width="2390" height="1350" />
+                <img class="corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted.webp" alt="Corrupted DOM:CLOUD logo" width="360" height="203" decoding="async" />
                 <p class="eyebrow">The Archive / Selected Work</p>
               </div>
               <h1 class="glitch-title" id="archiveTitle" data-text="SELECTED WORK" aria-label="Selected Work">
@@ -147,7 +157,7 @@
               <h2>VIEW THE EXTENDED CLOUD.</h2>
               <p>Open the complete visual archive and filter the full collection by category.</p>
             </div>
-            <img class="section-corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="" width="2390" height="1350" loading="lazy" decoding="async" />
+            <img class="section-corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted.webp" alt="" width="360" height="203" loading="lazy" decoding="async" />
             <a class="button button-outline" href="archive.html">View full archive <span>↗</span></a>
           </div>
         </div>
@@ -213,7 +223,7 @@
         </div>
         <div class="recovery-grid">
           <div class="recovery-copy">
-            <img class="recovery-logo" src="images/domcloud_logo.png" alt="DOM:CLOUD cloud logo" width="2390" height="1350" loading="lazy" decoding="async" />
+            <img class="recovery-logo" src="images/thumbs/ui/domcloud-logo-clean.webp" alt="DOM:CLOUD cloud logo" width="360" height="203" loading="lazy" decoding="async" />
             <p class="eyebrow">DOM:CLOUD recovered</p>
             <h2 id="recoveryTitle">Let’s build<br />something.</h2>
             <p>
@@ -262,7 +272,7 @@
               rel="noopener"
             >LinkedIn</a>
           </div>
-          <img class="footer-cloud-logo" src="images/domcloud_logo.png" alt="" width="2390" height="1350" loading="lazy" decoding="async" />
+          <img class="footer-cloud-logo" src="images/thumbs/ui/domcloud-logo-clean.webp" alt="" width="360" height="203" loading="lazy" decoding="async" />
           <div class="footer-status">
             <span>Thank you</span>
             <span class="status-indicator"><span>Status: Online</span><i aria-hidden="true"></i></span>
@@ -275,7 +285,7 @@
       <button class="lightbox-close" type="button" aria-label="Close image viewer">×</button>
       <button class="lightbox-arrow lightbox-prev" type="button" aria-label="Previous image">←</button>
       <figure>
-        <img id="lightboxImage" alt="" />
+        <img id="lightboxImage" alt="" decoding="async" />
         <figcaption>
           <span id="lightboxMeta"></span>
           <strong id="lightboxTitle"></strong>
