@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; 
 
 (() => {
   const data = window.PORTFOLIO;
