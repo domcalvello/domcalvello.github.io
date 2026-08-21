@@ -18,14 +18,18 @@
     <meta name="twitter:title" content="Domenick Calvello — DOM:CLOUD" />
     <meta name="twitter:description" content="Digital designer and front-end developer. Enter the archive." />
     <meta name="twitter:image" content="https://domcalvello.github.io/images/banner.webp" />
-    <link rel="icon" href="images/favicon.ico" sizes="any" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;600;700&amp;display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="fonts/manrope-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <link rel="preload" href="fonts/spin-cycle-ot.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="fonts/hacked.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="style.css" />
+    <script src="image-manifest.js" defer></script>
     <script src="portfolio-data.js" defer></script>
     <script src="script.js" defer></script>
   </head>
@@ -72,15 +76,29 @@
     <main>
       <section class="hero-sequence" id="home" aria-label="DOM:CLOUD introduction">
         <div class="hero-sticky">
-          <img
-            class="hero-layer hero-clean"
-            src="images/banner.webp"
-            alt="DOM:CLOUD above a field of clouds at sunrise"
-            width="1672"
-            height="941"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <picture class="hero-picture">
+            <source
+              media="(max-width: 767px)"
+              srcset="images/hero/banner-640.webp 640w, images/hero/banner-1280.webp 1280w"
+              sizes="100vw"
+            />
+            <source
+              media="(max-width: 1439px)"
+              srcset="images/hero/banner-1280.webp 1280w, images/hero/banner-1920.webp 1920w"
+              sizes="100vw"
+            />
+            <img
+              class="hero-layer hero-clean"
+              src="images/hero/banner-1280.webp"
+              srcset="images/hero/banner-1280.webp 1280w, images/hero/banner-1920.webp 1920w, images/hero/banner-2560.webp 2560w"
+              sizes="100vw"
+              alt="DOM:CLOUD above a field of clouds at sunrise"
+              width="1280"
+              height="720"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
           <div class="hero-layer hero-darken" aria-hidden="true"></div>
           <div class="hero-layer hero-corruption" aria-hidden="true"></div>
           <div class="hero-layer hero-noise" aria-hidden="true"></div>
@@ -116,7 +134,7 @@
           <header class="archive-header">
             <div class="archive-heading-block">
               <div class="archive-branding">
-                <img class="corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="Corrupted DOM:CLOUD logo" width="2390" height="1350" />
+                <img class="corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted-480.webp" alt="Corrupted DOM:CLOUD logo" width="480" height="271" decoding="async" />
                 <p class="eyebrow">PORTFOLIO INDEX / ACCESS COMPROMISED</p>
               </div>
               <h1 class="glitch-title" id="archiveTitle" data-text="SELECTED WORK" aria-label="Selected Work">
@@ -155,7 +173,7 @@
               <h2>VIEW THE EXTENDED CLOUD.</h2>
               <p>Open the complete visual archive and filter the full collection by category.</p>
             </div>
-            <img class="section-corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="" width="2390" height="1350" loading="lazy" decoding="async" />
+            <img class="section-corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted-480.webp" alt="" width="480" height="271" loading="lazy" decoding="async" />
             <a class="button button-outline" href="archive.html">View full archive <span>↗</span></a>
           </div>
         </div>
@@ -283,7 +301,7 @@
       <button class="lightbox-close" type="button" aria-label="Close image viewer">×</button>
       <button class="lightbox-arrow lightbox-prev" type="button" aria-label="Previous image">←</button>
       <figure>
-        <img id="lightboxImage" alt="" />
+        <img id="lightboxImage" alt="" decoding="async" />
         <figcaption>
           <span id="lightboxMeta"></span>
           <strong id="lightboxTitle"></strong>
