@@ -14,6 +14,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+}
+
 :root {
   --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "Courier New", Courier, monospace;
@@ -41,6 +49,11 @@
   --recovery-progress: 0;
   --restore-fill: 0%;
   --restore-x: 0px;
+  --hero-banner: url("images/hero/banner-2560.webp");
+  --hero-corruption-image: url("images/backgrounds/image2-1354.webp");
+  --dark-cloud-image: url("images/backgrounds/dark-clouds-2560.webp");
+  --archive-cloud-layer: none;
+  --recovery-cloud-layer: none;
 }
 
 *,
@@ -104,19 +117,21 @@ button:focus-visible,
 .skip-link {
   position: fixed;
   z-index: 1000;
-  top: 12px;
+  top: -100px;
   left: 12px;
   padding: 11px 15px;
   color: #fff;
   background: var(--cloud-blue);
   font: 700 12px/1 var(--font-mono);
   text-decoration: none;
-  transform: translateY(-160%);
-  transition: transform 160ms ease;
+  transform: none;
+  transition: top 160ms ease;
 }
 
-.skip-link:focus {
-  transform: translateY(0);
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 12px;
+  transform: none;
 }
 
 .eyebrow {
@@ -321,7 +336,7 @@ button:focus-visible,
 }
 
 .hero-corruption {
-  background: url("images/image2.webp") center 45% / cover no-repeat;
+  background: var(--hero-corruption-image) center 45% / cover no-repeat;
   opacity: clamp(0, calc((var(--corruption) - 0.16) * 1.45), 0.98);
   mix-blend-mode: normal;
   transform: translate3d(calc((var(--corruption) - 0.5) * -1.8%), 0, 0) scale(1.04);
@@ -360,7 +375,7 @@ button:focus-visible,
   position: absolute;
   left: 0;
   width: 100%;
-  background: url("images/banner.webp") center / cover no-repeat;
+  background: var(--hero-banner) center / cover no-repeat;
   background-attachment: fixed;
   mix-blend-mode: screen;
   will-change: transform;
@@ -524,11 +539,15 @@ button:focus-visible,
     radial-gradient(circle at 72% 8%, rgba(255,52,52,.12), transparent 28%),
     linear-gradient(rgba(0, 247, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 46, 166, 0.03) 1px, transparent 1px),
-    url("images/dark_clouds.webp");
+    var(--archive-cloud-layer);
   background-position: center top, center top, 0 0, 0 0, center top;
   background-size: 100% 100%, 100% 100%, 72px 72px, 72px 72px, 100% auto;
   background-blend-mode: normal, screen, normal, normal, screen;
   background-repeat: no-repeat, no-repeat, repeat, repeat, no-repeat;
+}
+
+.archive.archive-assets-ready {
+  --archive-cloud-layer: var(--dark-cloud-image);
 }
 
 .archive::before,
@@ -572,8 +591,14 @@ button:focus-visible,
   position: absolute;
   inset: 56.25vw 0 0;
   content: "";
-  background: url("images/morebg.webp") center top / 100% auto repeat-y;
+  background-position: center top;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
   opacity: .24;
+}
+
+.archive.archive-assets-ready .archive-grid::before {
+  background-image: url("images/morebg.webp");
 }
 
 .archive-content {
@@ -837,6 +862,12 @@ h2 {
   border: 1px solid rgba(238, 252, 255, 0.23);
 }
 
+.slide-media.is-loading {
+  background:
+    linear-gradient(110deg, transparent 34%, rgba(238,252,255,.045) 48%, transparent 62%) 0 0 / 220% 100%,
+    #02070a;
+}
+
 .slide-media::before {
   position: absolute;
   inset: -2%;
@@ -866,7 +897,11 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  opacity: 1;
+  transition: opacity 180ms ease;
 }
+
+.slide-media.is-loading > img:not([src]) { opacity: 0; }
 
 .slide-media.video-media,
 .slide-media.audio-media {
@@ -1390,8 +1425,12 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
       rgba(243, 240, 233, .72) 78%,
       var(--clean-bg) 100%
     ),
-    url("images/dark_clouds.webp") center 28% / cover no-repeat;
+    var(--recovery-cloud-layer) center 28% / cover no-repeat;
   background-blend-mode: normal, luminosity;
+}
+
+.recovery.recovery-assets-ready {
+  --recovery-cloud-layer: var(--dark-cloud-image);
 }
 
 .recovery-transition {
@@ -1627,6 +1666,27 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
 .lightbox-prev { left: 20px; }
 .lightbox-next { right: 20px; }
 
+@media (max-width: 1600px) {
+  :root {
+    --hero-banner: url("images/hero/banner-1920.webp");
+    --dark-cloud-image: url("images/backgrounds/dark-clouds-1920.webp");
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --hero-banner: url("images/hero/banner-1280.webp");
+    --hero-corruption-image: url("images/backgrounds/image2-1024.webp");
+    --dark-cloud-image: url("images/backgrounds/dark-clouds-1280.webp");
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --hero-corruption-image: url("images/backgrounds/image2-640.webp");
+  }
+}
+
 @media (max-width: 1000px) {
   .desktop-nav { display: none; }
   .menu-toggle { display: block; }
@@ -1676,7 +1736,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
     z-index: 0;
     inset: -3%;
     content: "";
-    background: url("images/banner.webp") center / cover no-repeat;
+    background: var(--hero-banner) center / cover no-repeat;
     filter: blur(12px) saturate(.85);
     transform: scale(1.08);
   }
