@@ -2,6 +2,7 @@
 
 (() => {
   const source = window.PORTFOLIO;
+  const imageAssets = window.IMAGE_ASSETS || {};
   const gallery = document.getElementById("archiveGrid");
   const count = document.getElementById("resultCount");
   const familySelect = document.getElementById("familySelect");
@@ -12,6 +13,13 @@
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
   })[char]);
   const pad = (value) => String(value).padStart(2, "0");
+  const getImageAsset = (path) => imageAssets[path] || {
+    thumb: path,
+    width: 1,
+    height: 1,
+    thumbWidth: 1,
+    thumbHeight: 1,
+  };
 
   const aiItems = source.archive.aiFamilies.flatMap((family) => {
     const start = Number.isInteger(family.start) ? family.start : 1;
@@ -47,6 +55,7 @@
   let filter = "all";
   let family = "all";
   let visibleItems = items;
+  let thumbnailObserver = null;
 
   source.archive.aiFamilies.forEach((entry) => {
     const option = document.createElement("option");
@@ -54,6 +63,53 @@
     option.textContent = `${entry.title} (${entry.count})`;
     familySelect.append(option);
   });
+
+  const finishThumbnail = (image) => {
+    const media = image.closest("button, .card-media");
+    media?.classList.remove("is-loading");
+    media?.classList.add("is-loaded");
+  };
+
+  const loadThumbnail = (image) => {
+    const path = image.dataset.src;
+    if (!path) return;
+    image.addEventListener("load", () => finishThumbnail(image), { once: true });
+    image.addEventListener("error", () => finishThumbnail(image), { once: true });
+    image.src = path;
+    image.removeAttribute("data-src");
+    if (image.complete && image.naturalWidth) finishThumbnail(image);
+  };
+
+  const prepareThumbnails = () => {
+    thumbnailObserver?.disconnect();
+    thumbnailObserver = null;
+
+    const images = [...gallery.querySelectorAll("img")];
+    images.forEach((image) => {
+      if (image.complete && image.naturalWidth) {
+        finishThumbnail(image);
+      } else if (!image.dataset.src) {
+        image.addEventListener("load", () => finishThumbnail(image), { once: true });
+        image.addEventListener("error", () => finishThumbnail(image), { once: true });
+      }
+    });
+
+    const pending = images.filter((image) => image.dataset.src);
+    if (!("IntersectionObserver" in window)) {
+      pending.forEach(loadThumbnail);
+      return;
+    }
+
+    thumbnailObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadThumbnail(entry.target);
+        thumbnailObserver?.unobserve(entry.target);
+      });
+    }, { rootMargin: "600px 0px", threshold: 0.01 });
+
+    pending.forEach((image) => thumbnailObserver.observe(image));
+  };
 
   function render() {
     visibleItems = items.filter((item) => {
@@ -65,12 +121,17 @@
     gallery.innerHTML = visibleItems.map((item, index) => {
       const title = escapeHTML(item.title);
       const familyTitle = escapeHTML(item.familyTitle);
+      const asset = getImageAsset(item.image);
+      const eager = index < 8;
+      const imageAttributes = eager
+        ? `src="${escapeHTML(asset.thumb)}" loading="eager"`
+        : `data-src="${escapeHTML(asset.thumb)}" loading="lazy"`;
       const media = item.category === "web"
-        ? `<a class="card-media" href="${escapeHTML(item.href)}" target="_blank" rel="noopener" aria-label="Open ${title} repository">
-            <img src="${escapeHTML(item.image)}" alt="${title}" loading="lazy" decoding="async" />
+        ? `<a class="card-media is-loading" href="${escapeHTML(item.href)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${title} live website">
+            <img ${imageAttributes} alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
           </a>`
-        : `<button class="archive-image-trigger" type="button" data-index="${index}" aria-label="Open ${title} in image viewer">
-            <img src="${escapeHTML(item.image)}" alt="${title}" loading="lazy" decoding="async" />
+        : `<button class="archive-image-trigger is-loading" type="button" data-index="${index}" aria-label="Open ${title} in image viewer">
+            <img ${imageAttributes} alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
           </button>`;
       return `
         <article class="archive-card${item.category === "web" ? " web-card" : ""}" data-category="${item.category}" data-family="${item.family}">
@@ -83,6 +144,7 @@
     }).join("");
 
     count.textContent = `${visibleItems.length} entries visible`;
+    prepareThumbnails();
   }
 
   filterButtons.forEach((button) => {
@@ -117,6 +179,9 @@
     const renderImage = () => {
       const item = visibleItems[index];
       if (!item || item.category === "web") return;
+      const asset = getImageAsset(item.image);
+      image.width = asset.width;
+      image.height = asset.height;
       image.src = item.image;
       image.alt = item.title;
       title.textContent = item.title;
