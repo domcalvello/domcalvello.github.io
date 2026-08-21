@@ -49,7 +49,7 @@
   --recovery-progress: 0;
   --restore-fill: 0%;
   --restore-x: 0px;
-  --hero-banner: url("images/hero/banner-2560.webp");
+  --hero-banner: url("images/banner.webp");
   --hero-corruption-image: url("images/backgrounds/image2-1354.webp");
   --dark-cloud-image: url("images/backgrounds/dark-clouds-2560.webp");
   --archive-cloud-layer: none;
@@ -1668,14 +1668,12 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
 
 @media (max-width: 1600px) {
   :root {
-    --hero-banner: url("images/hero/banner-1920.webp");
     --dark-cloud-image: url("images/backgrounds/dark-clouds-1920.webp");
   }
 }
 
 @media (max-width: 1100px) {
   :root {
-    --hero-banner: url("images/hero/banner-1280.webp");
     --hero-corruption-image: url("images/backgrounds/image2-1024.webp");
     --dark-cloud-image: url("images/backgrounds/dark-clouds-1280.webp");
   }
