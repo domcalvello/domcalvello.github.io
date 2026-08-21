@@ -840,6 +840,7 @@
         >
           <img
             data-src="${escapeHTML(asset.thumb)}"
+            data-fallback="${escapeHTML(item.image)}"
             alt="${title}"
             width="${asset.thumbWidth}"
             height="${asset.thumbHeight}"
@@ -1124,7 +1125,22 @@
 
         image.loading = eager ? "eager" : "lazy";
         image.addEventListener("load", finish, { once: true });
-        image.addEventListener("error", finish, { once: true });
+        image.addEventListener("error", () => {
+          const fallback = image.dataset.fallback;
+          if (!fallback || image.dataset.fallbackTried) {
+            finish();
+            return;
+          }
+
+          image.dataset.fallbackTried = "true";
+          image.addEventListener("load", finish, { once: true });
+          image.addEventListener("error", finish, { once: true });
+          image.src = fallback;
+          media?.style.setProperty(
+            "--slide-bg",
+            `url("${fallback.replace(/["\\]/g, "\\$&")}")`
+          );
+        }, { once: true });
         image.src = source;
         image.removeAttribute("data-src");
         media?.style.setProperty(
