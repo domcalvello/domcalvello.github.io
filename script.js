@@ -314,6 +314,8 @@
     ) return null;
 
     const AUTO_SCROLL_DURATION = 2000;
+    const MOBILE_AUTO_SCROLL_DURATION = 2000;
+    const mobileRecovery = window.matchMedia("(max-width: 767px)");
     const defaultHelp = help.textContent;
     const interruptKeys = new Set([
       "ArrowUp",
@@ -459,6 +461,9 @@
 
       const startY = window.scrollY;
       const targetY = getRecoveryDestination();
+      const autoScrollDuration = mobileRecovery.matches
+        ? MOBILE_AUTO_SCROLL_DURATION
+        : AUTO_SCROLL_DURATION;
       const startTime = performance.now();
       previousScrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = "auto";
@@ -475,7 +480,7 @@
 
       const advance = (time) => {
         if (!autoScrolling) return;
-        const elapsed = clamp((time - startTime) / AUTO_SCROLL_DURATION);
+        const elapsed = clamp((time - startTime) / autoScrollDuration);
         expectedAutoY = startY + (targetY - startY) * elapsed;
         window.scrollTo(0, expectedAutoY);
         if (elapsed < 1) {
