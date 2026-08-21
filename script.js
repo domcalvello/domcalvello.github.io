@@ -3,7 +3,6 @@
 (() => {
   const data = window.PORTFOLIO;
   if (!data) return;
-  const imageManifest = window.PORTFOLIO_IMAGE_MANIFEST || {};
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const header = document.getElementById("siteHeader");
@@ -14,21 +13,13 @@
   const carouselRoot = document.getElementById("featuredCarousels");
   const menuToggle = document.querySelector(".menu-toggle");
   const mobileMenu = document.getElementById("mobileMenu");
+  const activeCarousels = [];
   let recoveryControl = null;
 
   const clamp = (value, min = 0, max = 1) =>
     Math.min(max, Math.max(min, value));
 
   const pad = (value) => String(value).padStart(2, "0");
-
-  const getImageAsset = (image) =>
-    imageManifest[image] || {
-      thumb: image,
-      width: 1,
-      height: 1,
-      thumbWidth: 1,
-      thumbHeight: 1,
-    };
 
   const escapeHTML = (value = "") =>
     value.replace(/[&<>'"]/g, (char) => ({
@@ -121,40 +112,44 @@
     );
   }
 
-  function initDeferredArt() {
-    if (!archive || !recovery) return;
+  function initSkipIntro() {
+    const skipIntroLinks = [
+      ...document.querySelectorAll(".skip-intro-nav"),
+    ];
 
-    let loaded = false;
-    const events = ["wheel", "touchstart", "pointerdown", "keydown"];
+    if (!skipIntroLinks.length || !archive || !header) return;
 
-    const activate = () => {
-      if (loaded) return;
-      loaded = true;
-      archive.classList.add("archive-assets-ready");
-      recovery.classList.add("recovery-assets-ready");
-      events.forEach((eventName) => {
-        window.removeEventListener(eventName, activate);
-      });
-      window.removeEventListener("scroll", activateOnScroll);
-    };
+    skipIntroLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
 
-    const activateOnScroll = () => {
-      if (window.scrollY > 1) activate();
-    };
+        event.preventDefault();
 
-    if (window.scrollY > 0 || location.hash) {
-      activate();
-      return;
-    }
+        if (location.hash !== "#selected-work") {
+          history.pushState(null, "", "#selected-work");
+        }
 
-    events.forEach((eventName) => {
-      window.addEventListener(eventName, activate, {
-        passive: true,
-        once: true,
+        const targetY = Math.max(
+          0,
+          window.scrollY +
+            archive.getBoundingClientRect().top -
+            header.offsetHeight
+        );
+
+        window.scrollTo({
+          top: targetY,
+          behavior: "auto",
+        });
       });
     });
-
-    window.addEventListener("scroll", activateOnScroll, { passive: true });
   }
 
   function initHeroSequence() {
@@ -318,12 +313,7 @@
       !recovery
     ) return null;
 
-    const DESKTOP_AUTO_SCROLL_DURATION = 2000;
-    const MOBILE_AUTO_SCROLL_DURATION = 1750;
-    const mobileRecovery = window.matchMedia("(max-width: 767px)");
-    const commandLines = [
-      ...recoveryConsole.querySelectorAll(".recovery-console-lines span"),
-    ];
+    const AUTO_SCROLL_DURATION = 2000;
     const defaultHelp = help.textContent;
     const interruptKeys = new Set([
       "ArrowUp",
@@ -349,7 +339,6 @@
     let autoFrame = 0;
     let autoScrolling = false;
     let completed = false;
-    let completionSource = null;
     let previousScrollBehavior = "";
     let expectedAutoY = null;
     let scrollCheckFrame = 0;
@@ -377,30 +366,6 @@
         targetCenter - visibleViewportCenter,
         0,
         maximumY
-      );
-    };
-
-    const getMobileConsoleDestination = (startY) => {
-      const maximumY = Math.min(
-        getRecoveryDestination(),
-        Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
-      );
-      const headerClearance = header.offsetHeight;
-      const visibleCenter =
-        headerClearance +
-        Math.max(1, window.innerHeight - headerClearance) / 2;
-      const targetLine = commandLines[Math.min(5, commandLines.length - 1)];
-      const lineRect = targetLine?.getBoundingClientRect();
-      const lineTarget = lineRect
-        ? window.scrollY + lineRect.top + lineRect.height / 2 - visibleCenter
-        : startY + window.innerHeight * 0.55;
-      const minimumTarget = startY + window.innerHeight * 0.4;
-      const maximumTarget = startY + window.innerHeight * 0.7;
-
-      return clamp(
-        lineTarget,
-        Math.min(minimumTarget, maximumY),
-        Math.min(maximumTarget, maximumY)
       );
     };
 
@@ -443,35 +408,22 @@
 
     const restoreAvailableState = () => {
       completed = false;
-      completionSource = null;
       panel.classList.remove("is-running", "is-complete");
       handle.removeAttribute("aria-disabled");
       label.textContent = "SLIDE TO RECOVER";
       help.textContent = defaultHelp;
     };
 
-    const markComplete = ({
-      preserveRecoveryProgress = false,
-      source = "scroll",
-    } = {}) => {
+    const markComplete = () => {
       completed = true;
-      completionSource = source;
       panel.classList.remove("is-running");
       panel.classList.add("is-complete");
       handle.setAttribute("aria-disabled", "true");
       renderSlider(1);
-
-      if (!preserveRecoveryProgress) {
-        document.documentElement.style.setProperty("--recovery-progress", "1");
-      }
-
+      document.documentElement.style.setProperty("--recovery-progress", "1");
       integrity.textContent = "SYSTEM INTEGRITY: 100%";
-      label.textContent = preserveRecoveryProgress
-        ? "RECOVERY SEQUENCE ACTIVE"
-        : "RECOVERY COMPLETE";
-      help.textContent = preserveRecoveryProgress
-        ? "Continue scrolling through recovery"
-        : "DOM:CLOUD restored";
+      label.textContent = "RECOVERY COMPLETE";
+      help.textContent = "DOM:CLOUD restored";
     };
 
     const cancelAutoRecovery = () => {
@@ -503,17 +455,10 @@
         "--recovery-progress",
         initialProgress.toFixed(4)
       );
-      const isMobileRun = mobileRecovery.matches;
-
-      renderSlider(isMobileRun ? 1 : initialProgress);
+      renderSlider(initialProgress);
 
       const startY = window.scrollY;
-      const targetY = isMobileRun
-        ? getMobileConsoleDestination(startY)
-        : getRecoveryDestination();
-      const duration = isMobileRun
-        ? MOBILE_AUTO_SCROLL_DURATION
-        : DESKTOP_AUTO_SCROLL_DURATION;
+      const targetY = getRecoveryDestination();
       const startTime = performance.now();
       previousScrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = "auto";
@@ -524,16 +469,13 @@
         autoScrolling = false;
         expectedAutoY = null;
         document.documentElement.style.scrollBehavior = previousScrollBehavior;
-        markComplete({
-          preserveRecoveryProgress: isMobileRun,
-          source: isMobileRun ? "mobile-slider" : "scroll",
-        });
+        markComplete();
         return;
       }
 
       const advance = (time) => {
         if (!autoScrolling) return;
-        const elapsed = clamp((time - startTime) / duration);
+        const elapsed = clamp((time - startTime) / AUTO_SCROLL_DURATION);
         expectedAutoY = startY + (targetY - startY) * elapsed;
         window.scrollTo(0, expectedAutoY);
         if (elapsed < 1) {
@@ -545,10 +487,7 @@
         expectedAutoY = null;
         document.documentElement.style.scrollBehavior = previousScrollBehavior;
         window.scrollTo(0, targetY);
-        markComplete({
-          preserveRecoveryProgress: isMobileRun,
-          source: isMobileRun ? "mobile-slider" : "scroll",
-        });
+        markComplete();
       };
 
       autoFrame = requestAnimationFrame(advance);
@@ -605,15 +544,6 @@
     window.addEventListener("resize", () => {
       if (pointerId !== null) {
         endDrag(null, false);
-      }
-
-      if (
-        completed &&
-        completionSource === "mobile-slider" &&
-        !mobileRecovery.matches
-      ) {
-        restoreAvailableState();
-        renderSlider(getScrollProgress());
       }
     }, { passive: true });
 
@@ -678,14 +608,6 @@
       getScrollProgress,
       syncFromScroll(progress) {
         if (pointerId !== null) return;
-
-        if (
-          mobileRecovery.matches &&
-          (autoScrolling || completionSource === "mobile-slider")
-        ) {
-          return;
-        }
-
         renderSlider(progress);
         if (autoScrolling) return;
         if (progress >= 0.999) {
@@ -750,10 +672,10 @@
 
               <img
                 class="section-corrupt-logo"
-                src="images/thumbs/ui/domcloud-logo-corrupted.webp"
+                src="images/domcloud_logo_corrupted.webp"
                 alt=""
-                width="360"
-                height="203"
+                width="2390"
+                height="1350"
                 loading="lazy"
                 decoding="async"
               />
@@ -826,7 +748,9 @@
     carouselRoot
       .querySelectorAll(".portfolio-carousel")
       .forEach((element) => {
-        new Carousel(element);
+        activeCarousels.push(
+          new Carousel(element)
+        );
       });
 
     initMediaPreviews();
@@ -851,15 +775,6 @@
       "Selected work"
     );
 
-    const asset = item.image
-      ? getImageAsset(item.image)
-      : null;
-
-    const titleMarkup =
-      category === "web" && item.href
-        ? `<a class="project-title-link" href="${escapeHTML(item.href)}" target="_blank" rel="noopener noreferrer">${title}</a>`
-        : title;
-
     let media = "";
 
     if (
@@ -870,24 +785,25 @@
         <button
           class="slide-media image-trigger"
           type="button"
+          style="--slide-bg: url('${escapeHTML(item.image)}')"
           data-image="${escapeHTML(item.image)}"
-          data-thumb="${escapeHTML(asset.thumb)}"
           data-title="${title}"
           data-meta="${technique}"
           aria-label="Open ${title} in image viewer"
         >
           <img
-            class="carousel-thumb"
-            data-src="${escapeHTML(asset.thumb)}"
+            src="${escapeHTML(item.image)}"
             alt="${title}"
-            width="${asset.thumbWidth}"
-            height="${asset.thumbHeight}"
             loading="lazy"
             decoding="async"
           />
         </button>
       `;
     } else if (category === "video") {
+      const background = item.thumb
+        ? ` style="background-image:url('${escapeHTML(item.thumb)}')"`
+        : "";
+
       const thumbClass =
         item.thumb ? " has-thumb" : "";
 
@@ -899,8 +815,8 @@
             data-embed="${escapeHTML(item.embed)}"
             data-service="${escapeHTML(item.service)}"
             data-ratio="${escapeHTML(item.ratio)}"
-            ${item.thumb ? `data-thumb="${escapeHTML(item.thumb)}"` : ""}
             aria-label="Load ${title} ${escapeHTML(item.service)} player"
+            ${background}
           >
             <span class="media-preview-copy">
               <small class="media-service">
@@ -959,11 +875,12 @@
     const externalLink = item.href
       ? `
         <a
+          class="${category === "web" ? "web-project-link" : ""}"
           href="${escapeHTML(item.href)}"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
         >
-          Open project ↗
+          ${category === "web" ? "OPEN WEBPAGE" : "Open project"} ↗
         </a>
       `
       : item.soundcloud
@@ -971,7 +888,7 @@
           <a
             href="${escapeHTML(item.soundcloud)}"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener"
           >
             Open SoundCloud ↗
           </a>
@@ -982,10 +899,7 @@
       <article
         class="carousel-slide${index === 0 ? " is-active" : ""}"
         role="group"
-        aria-roledescription="slide"
         aria-label="Slide ${index + 1} of ${total}"
-        aria-hidden="${index === 0 ? "false" : "true"}"
-        ${index === 0 ? "" : "inert"}
         data-index="${index}"
       >
         ${media}
@@ -996,7 +910,7 @@
               ${technique} / ${subtitle}
             </p>
 
-            <h3>${titleMarkup}</h3>
+            <h3>${title}</h3>
           </div>
 
           ${externalLink}
@@ -1065,8 +979,6 @@
     }
 
     onKeydown(event) {
-      if (event.target !== this.track) return;
-
       if (event.key === "ArrowLeft") {
         event.preventDefault();
         this.goTo(this.index - 1, true);
@@ -1149,29 +1061,11 @@
 
     update(deliberate) {
       this.slides.forEach((slide, index) => {
-        const isActive = index === this.index;
-
-        if (
-          !isActive &&
-          slide.contains(document.activeElement)
-        ) {
-          this.track.focus({ preventScroll: true });
-        }
-
         slide.classList.toggle(
           "is-active",
-          isActive
+          index === this.index
         );
-
-        slide.setAttribute(
-          "aria-hidden",
-          String(!isActive)
-        );
-
-        slide.inert = !isActive;
       });
-
-      this.loadNeighborhood();
 
       this.prev.disabled =
         this.index === 0;
@@ -1225,38 +1119,6 @@
         }, 260);
       }
     }
-
-    loadNeighborhood() {
-      [this.index - 1, this.index, this.index + 1]
-        .filter((index) => index >= 0 && index < this.slides.length)
-        .forEach((index) => this.loadSlideMedia(this.slides[index]));
-    }
-
-    loadSlideMedia(slide) {
-      const image = slide.querySelector("img[data-src]");
-
-      if (image) {
-        const source = image.dataset.src;
-        const media = image.closest(".slide-media");
-        const markLoaded = () => image.classList.add("is-loaded");
-
-        image.addEventListener("load", markLoaded, { once: true });
-        image.src = source;
-        image.removeAttribute("data-src");
-        media?.style.setProperty("--slide-bg", `url("${source}")`);
-
-        if (image.complete && image.naturalWidth) {
-          markLoaded();
-        }
-      }
-
-      const preview = slide.querySelector(".media-preview[data-thumb]");
-
-      if (preview && !preview.style.backgroundImage) {
-        preview.style.backgroundImage = `url("${preview.dataset.thumb}")`;
-        preview.removeAttribute("data-thumb");
-      }
-    }
   }
 
   function initMediaPreviews() {
@@ -1287,9 +1149,38 @@
         { once: true }
       );
     });
+
+    /*
+     * Automatically load the first Instagram
+     * player found in the video carousel.
+     */
+    const firstInstagram =
+      videoButtons.find((button) =>
+        button.dataset.service
+          ?.toLowerCase()
+          .includes("instagram")
+      );
+
+    if (firstInstagram) {
+      loadVideo(firstInstagram, true);
+    }
+
+    /*
+     * Automatically load the first
+     * SoundCloud player.
+     */
+    if (audioButtons[0]) {
+      loadSoundCloud(
+        audioButtons[0],
+        true
+      );
+    }
   }
 
-  function loadVideo(button) {
+  function loadVideo(
+    button,
+    eager = false
+  ) {
     if (!button?.isConnected) return;
 
     const embed = button.dataset.embed;
@@ -1314,7 +1205,8 @@
     frame.src = embed;
     frame.title = title;
 
-    frame.loading = "lazy";
+    frame.loading =
+      eager ? "eager" : "lazy";
 
     frame.allow =
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
@@ -1324,7 +1216,10 @@
     button.replaceWith(frame);
   }
 
-  function loadSoundCloud(button) {
+  function loadSoundCloud(
+    button,
+    eager = false
+  ) {
     if (!button?.isConnected) return;
 
     const profile =
@@ -1362,9 +1257,11 @@
           ?.textContent || "SoundCloud"
       } player`;
 
-    frame.loading = "lazy";
+    frame.loading =
+      eager ? "eager" : "lazy";
 
     frame.allow = "autoplay";
+    frame.scrolling = "no";
 
     button.replaceWith(frame);
   }
@@ -1372,7 +1269,7 @@
   function initSectionObserver() {
     const links = [
       ...document.querySelectorAll(
-        ".archive-tabs a, .desktop-nav a, .mobile-menu a"
+        ".archive-tabs a, .desktop-nav a:not(.skip-intro-nav), .mobile-menu a:not(.skip-intro-nav)"
       ),
     ];
 
@@ -1392,43 +1289,31 @@
 
     if (!sections.length) return;
 
-    const visibility = new Map();
-
-    const setCurrentSection = (sectionId) => {
-      const activeId = sectionId === "home"
-        ? "selected-work"
-        : sectionId;
+    const setActiveSection = (id) => {
+      const activeId =
+        id === "home" || id === "selected-work"
+          ? ""
+          : id;
 
       links.forEach((link) => {
-        const isCurrent =
-          link.getAttribute("href") === `#${activeId}`;
-
-        link.classList.toggle("active", isCurrent);
-
-        if (isCurrent) {
-          link.setAttribute("aria-current", "location");
-        } else {
-          link.removeAttribute("aria-current");
-        }
+        link.classList.toggle(
+          "active",
+          Boolean(activeId) &&
+            link.getAttribute("href") === `#${activeId}`
+        );
       });
     };
 
-    setCurrentSection("selected-work");
+    setActiveSection("");
 
     const observer =
       new IntersectionObserver(
         (entries) => {
-          entries.forEach((entry) => {
-            visibility.set(entry.target.id, entry);
-          });
-
-          if (window.scrollY <= 1) {
-            setCurrentSection("selected-work");
-            return;
-          }
-
-          const visible = [...visibility.values()]
-            .filter((entry) => entry.isIntersecting)
+          const visible = entries
+            .filter(
+              (entry) =>
+                entry.isIntersecting
+            )
             .sort(
               (a, b) =>
                 b.intersectionRatio -
@@ -1437,7 +1322,7 @@
 
           if (!visible) return;
 
-          setCurrentSection(visible.target.id);
+          setActiveSection(visible.target.id);
         },
         {
           rootMargin:
@@ -1511,15 +1396,8 @@
 
       if (!trigger) return;
 
-      const asset = getImageAsset(
-        trigger.dataset.image
-      );
-
       image.src =
         trigger.dataset.image;
-
-      image.width = asset.width;
-      image.height = asset.height;
 
       image.alt =
         trigger.dataset.title;
@@ -1635,7 +1513,7 @@
   }
 
   initMenu();
-  initDeferredArt();
+  initSkipIntro();
   recoveryControl = initRecoveryControl();
   initHeroSequence();
   renderFeaturedCarousels();
@@ -1689,22 +1567,3 @@
     );
   }, 500);
 })();
-
-// Toggle Status: Online -> Hacked on scroll threshold
-window.addEventListener('scroll', () => {
-  const statusText = document.getElementById('statusText');
-  const statusDot = document.getElementById('statusDot');
-
-  if (!statusText || !statusDot) return;
-
-  // Trigger point: when user scrolls past 50% of screen height
-  const scrollThreshold = window.innerHeight * 0.5;
-
-  if (window.scrollY > scrollThreshold) {
-    statusText.textContent = 'Status: Hacked';
-    statusDot.classList.add('hacked');
-  } else {
-    statusText.textContent = 'Status: Online';
-    statusDot.classList.remove('hacked');
-  }
-});
