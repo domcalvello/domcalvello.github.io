@@ -94,10 +94,10 @@ window.PORTFOLIO = {
     ],
     audio: [
 
-      { title: "SwaggleRock", subtitle: "SoundCloud catalog", soundcloud: "https://soundcloud.com/swagglerock", accent: "#ff3434" },
-      { title: "SwaggleRock Edits", subtitle: "SoundCloud catalog", soundcloud: "https://soundcloud.com/swagglerock-edits", accent: "#00f7ff" },
-      { title: "JACKPOT", subtitle: "SoundCloud catalog", soundcloud: "https://soundcloud.com/jackpotlasvegas", accent: "#d4ae45" },      
-      { title: "Shooter McNappin", subtitle: "SoundCloud catalog", soundcloud: "https://soundcloud.com/shootermcnappin", accent: "#ff2ea6" },
+      { title: "Production + Branding", technique: "Selected Work", subtitle: "Audio Catalog", soundcloud: "https://soundcloud.com/swagglerock", accent: "#ff3434" },
+      { title: "Production + Branding", technique: "Selected Work", subtitle: "Audio Catalog", soundcloud: "https://soundcloud.com/swagglerock-edits", accent: "#00f7ff" },
+      { title: "Production + Branding", technique: "Selected Work", subtitle: "Audio Catalog", soundcloud: "https://soundcloud.com/jackpotlasvegas", accent: "#d4ae45" },
+      { title: "Production + Branding", technique: "Selected Work", subtitle: "Audio Catalog", soundcloud: "https://soundcloud.com/shootermcnappin", accent: "#ff2ea6" },
     ],
   },
 
