@@ -64,7 +64,7 @@ window.PORTFOLIO = {
         ratio: "landscape",
         embed: "https://www.youtube-nocookie.com/embed/jKPLJN-z9qg",
         href: "https://www.youtube.com/watch?v=jKPLJN-z9qg",
-        thumb: "https://i.ytimg.com/vi/jKPLJN-z9qg/maxresdefault.jpg",
+        thumb: "images/thumbs/video/next-hellifornia-youtube.webp",
       },
       {
         title: "Video Editing + YouTube",
@@ -73,7 +73,7 @@ window.PORTFOLIO = {
         ratio: "landscape",
         embed: "https://www.youtube-nocookie.com/embed/oUZAfSvIqy8",
         href: "https://www.youtube.com/watch?v=oUZAfSvIqy8",
-        thumb: "https://i.ytimg.com/vi/oUZAfSvIqy8/maxresdefault.jpg",
+        thumb: "images/thumbs/video/money-in-the-bank-youtube.webp",
       },
       {
         title: "Video Editing + Instagram",
