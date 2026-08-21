@@ -70,11 +70,24 @@
     media?.classList.add("is-loaded");
   };
 
+  const recoverThumbnail = (image) => {
+    const fallback = image.dataset.fallback;
+    if (!fallback || image.dataset.fallbackTried) {
+      finishThumbnail(image);
+      return;
+    }
+
+    image.dataset.fallbackTried = "true";
+    image.addEventListener("load", () => finishThumbnail(image), { once: true });
+    image.addEventListener("error", () => finishThumbnail(image), { once: true });
+    image.src = fallback;
+  };
+
   const loadThumbnail = (image) => {
     const path = image.dataset.src;
     if (!path) return;
     image.addEventListener("load", () => finishThumbnail(image), { once: true });
-    image.addEventListener("error", () => finishThumbnail(image), { once: true });
+    image.addEventListener("error", () => recoverThumbnail(image), { once: true });
     image.src = path;
     image.removeAttribute("data-src");
     if (image.complete && image.naturalWidth) finishThumbnail(image);
@@ -88,9 +101,11 @@
     images.forEach((image) => {
       if (image.complete && image.naturalWidth) {
         finishThumbnail(image);
+      } else if (image.complete && !image.dataset.src) {
+        recoverThumbnail(image);
       } else if (!image.dataset.src) {
         image.addEventListener("load", () => finishThumbnail(image), { once: true });
-        image.addEventListener("error", () => finishThumbnail(image), { once: true });
+        image.addEventListener("error", () => recoverThumbnail(image), { once: true });
       }
     });
 
@@ -128,10 +143,10 @@
         : `data-src="${escapeHTML(asset.thumb)}" loading="lazy"`;
       const media = item.category === "web"
         ? `<a class="card-media is-loading" href="${escapeHTML(item.href)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${title} live website">
-            <img ${imageAttributes} alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
+            <img ${imageAttributes} data-fallback="${escapeHTML(item.image)}" alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
           </a>`
         : `<button class="archive-image-trigger is-loading" type="button" data-index="${index}" aria-label="Open ${title} in image viewer">
-            <img ${imageAttributes} alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
+            <img ${imageAttributes} data-fallback="${escapeHTML(item.image)}" alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />
           </button>`;
       return `
         <article class="archive-card${item.category === "web" ? " web-card" : ""}" data-category="${item.category}" data-family="${item.family}">
