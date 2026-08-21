@@ -479,217 +479,217 @@ window.IMAGE_ASSETS = Object.freeze({
   },
   "images/graphics/10bandsbootleg.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/10bandsbootleg.webp",
+    "thumb": "images/thumbs/10bandsbootleg.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/BirdMachineBoot.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/BirdMachineBoot.webp",
+    "thumb": "images/thumbs/BirdMachineBoot.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/BlewMyMind.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/BlewMyMind.webp",
+    "thumb": "images/thumbs/BlewMyMind.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/CLOSEcover.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/CLOSEcover.webp",
+    "thumb": "images/thumbs/CLOSEcover.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/COLDFLEXMIX.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/COLDFLEXMIX.webp",
+    "thumb": "images/thumbs/COLDFLEXMIX.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/GYBDSRrmx.webp": {
     "height": 1280,
-    "thumb": "images/thumbs/graphics/GYBDSRrmx.webp",
+    "thumb": "images/thumbs/GYBDSRrmx.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1280
   },
   "images/graphics/IGLOOFAMPICNIC.webp": {
     "height": 1800,
-    "thumb": "images/thumbs/graphics/IGLOOFAMPICNIC.webp",
+    "thumb": "images/thumbs/IGLOOFAMPICNIC.webp",
     "thumbHeight": 1440,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/KNKdoubleDrop.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/KNKdoubleDrop.webp",
+    "thumb": "images/thumbs/KNKdoubleDrop.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/LOCDSHOOTERCOVER.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/LOCDSHOOTERCOVER.webp",
+    "thumb": "images/thumbs/LOCDSHOOTERCOVER.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/RufusG.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/RufusG.webp",
+    "thumb": "images/thumbs/RufusG.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/SRtvglitch.webp": {
     "height": 631,
-    "thumb": "images/thumbs/graphics/SRtvglitch.webp",
+    "thumb": "images/thumbs/SRtvglitch.webp",
     "thumbHeight": 631,
     "thumbWidth": 631,
     "width": 631
   },
   "images/graphics/TELLME.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/TELLME.webp",
+    "thumb": "images/thumbs/TELLME.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/THURSBAMBINO.webp": {
     "height": 1010,
-    "thumb": "images/thumbs/graphics/THURSBAMBINO.webp",
+    "thumb": "images/thumbs/THURSBAMBINO.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1010
   },
   "images/graphics/TRANSITIONEDITS.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/TRANSITIONEDITS.webp",
+    "thumb": "images/thumbs/TRANSITIONEDITS.webp",
     "thumbHeight": 1200,
     "thumbWidth": 900,
     "width": 900
   },
   "images/graphics/WILDbootleg.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/WILDbootleg.webp",
+    "thumb": "images/thumbs/WILDbootleg.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/bannerigloofeb21.webp": {
     "height": 315,
-    "thumb": "images/thumbs/graphics/bannerigloofeb21.webp",
+    "thumb": "images/thumbs/bannerigloofeb21.webp",
     "thumbHeight": 315,
     "thumbWidth": 851,
     "width": 851
   },
   "images/graphics/deepoceansmix.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/deepoceansmix.webp",
+    "thumb": "images/thumbs/deepoceansmix.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/equinoxigloobanner.webp": {
     "height": 315,
-    "thumb": "images/thumbs/graphics/equinoxigloobanner.webp",
+    "thumb": "images/thumbs/equinoxigloobanner.webp",
     "thumbHeight": 315,
     "thumbWidth": 851,
     "width": 851
   },
   "images/graphics/fbbannersr.jpg": {
     "height": 315,
-    "thumb": "images/thumbs/graphics/fbbannersr.webp",
+    "thumb": "images/thumbs/fbbannersr.webp",
     "thumbHeight": 315,
     "thumbWidth": 851,
     "width": 851
   },
   "images/graphics/feelthevolume.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/feelthevolume.webp",
+    "thumb": "images/thumbs/feelthevolume.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/heistflyer.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/heistflyer.webp",
+    "thumb": "images/thumbs/heistflyer.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/icantstop.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/icantstop.webp",
+    "thumb": "images/thumbs/icantstop.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/igloofeb21.webp": {
     "height": 1950,
-    "thumb": "images/thumbs/graphics/igloofeb21.webp",
+    "thumb": "images/thumbs/igloofeb21.webp",
     "thumbHeight": 1387,
     "thumbWidth": 960,
     "width": 1350
   },
   "images/graphics/pizzaparty.webp": {
     "height": 1200,
-    "thumb": "images/thumbs/graphics/pizzaparty.webp",
+    "thumb": "images/thumbs/pizzaparty.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1200
   },
   "images/graphics/redlipslocdout.webp": {
     "height": 1500,
-    "thumb": "images/thumbs/graphics/redlipslocdout.webp",
+    "thumb": "images/thumbs/redlipslocdout.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/shootercover.webp": {
     "height": 698,
-    "thumb": "images/thumbs/graphics/shootercover.webp",
+    "thumb": "images/thumbs/shootercover.webp",
     "thumbHeight": 442,
     "thumbWidth": 960,
     "width": 1515
   },
   "images/graphics/shootermcnappin.webp": {
     "height": 1254,
-    "thumb": "images/thumbs/graphics/shootermcnappin.webp",
+    "thumb": "images/thumbs/shootermcnappin.webp",
     "thumbHeight": 960,
     "thumbWidth": 960,
     "width": 1254
   },
   "images/graphics/shootermerch.webp": {
     "height": 1254,
-    "thumb": "images/thumbs/graphics/shootermerch.webp",
+    "thumb": "images/thumbs/shootermerch.webp",
     "thumbHeight": 803,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/srbanner.webp": {
     "height": 503,
-    "thumb": "images/thumbs/graphics/srbanner.webp",
+    "thumb": "images/thumbs/srbanner.webp",
     "thumbHeight": 201,
     "thumbWidth": 960,
     "width": 2400
   },
   "images/graphics/tourlist.jpg": {
     "height": 2100,
-    "thumb": "images/thumbs/graphics/tourlist.webp",
+    "thumb": "images/thumbs/tourlist.webp",
     "thumbHeight": 1344,
     "thumbWidth": 960,
     "width": 1500
   },
   "images/graphics/trapnationbanner.webp": {
     "height": 315,
-    "thumb": "images/thumbs/graphics/trapnationbanner.webp",
+    "thumb": "images/thumbs/trapnationbanner.webp",
     "thumbHeight": 315,
     "thumbWidth": 851,
     "width": 851
