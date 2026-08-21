@@ -1719,6 +1719,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
   .intrusion-line,
   .full-archive-cta { margin-right: var(--page-gutter); margin-left: var(--page-gutter); }
   .archive-header { grid-template-columns: 1fr; padding: 0; }
+  .archive-heading-block { transform: translateY(-56px); }
   .archive-status { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 18px; }
   .archive-intro { grid-column: 1; grid-row: auto; }
   .glitch-title { font-size: clamp(48px, 16vw, 78px); }
