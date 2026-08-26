@@ -1037,6 +1037,13 @@ window.IMAGE_ASSETS = Object.freeze({
     "thumbWidth": 960,
     "width": 1024
   },
+  "images/docklight-lobster-house-preview.jpg": {
+    "height": 712,
+    "thumb": "images/docklight-lobster-house-preview.jpg",
+    "thumbHeight": 712,
+    "thumbWidth": 1265,
+    "width": 1265
+  },
   "images/webp1.webp": {
     "height": 1435,
     "thumb": "images/thumbs/webp1.webp",
