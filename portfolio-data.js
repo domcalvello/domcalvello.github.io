@@ -11,6 +11,13 @@ window.PORTFOLIO = {
         type: "Website",
       },
       {
+        title: "Docklight Lobster House",
+        subtitle: "Responsive fictional restaurant website concept",
+        image: "images/docklight-lobster-house-preview.jpg",
+        href: "https://domcalvello.github.io/RESTAURANT-DESIGN-1/",
+        type: "Website",
+      },
+      {
         title: "Buffalo Remixed",
         subtitle: "Buffalo Bills NFL inspired fan-apparel storefront",
         image: "images/webp1.webp",
