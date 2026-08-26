@@ -1,5 +1,5 @@
 "use strict";
-
+ 
 window.IMAGE_ASSETS = Object.freeze({
   "images/album1.webp": {
     "height": 1254,
