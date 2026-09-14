@@ -1037,6 +1037,20 @@ window.IMAGE_ASSETS = Object.freeze({
     "thumbWidth": 960,
     "width": 1024
   },
+ "images/circuscircus-screenshot.jpg": {
+  "height": 1838,
+  "thumb": "images/circuscircus-screenshot.jpg",
+  "thumbHeight": 1838,
+  "thumbWidth": 2488,
+  "width": 2488
+},
+"images/magnusoculus-screenshot.jpg": {
+  "height": 2039,
+  "thumb": "images/magnusoculus-screenshot.jpg",
+  "thumbHeight": 2039,
+  "thumbWidth": 2985,
+  "width": 2985
+},
   "images/docklight-lobster-house-preview.jpg": {
     "height": 712,
     "thumb": "images/docklight-lobster-house-preview.jpg",
