@@ -1051,6 +1051,13 @@ window.IMAGE_ASSETS = Object.freeze({
   "thumbWidth": 2985,
   "width": 2985
 },
+"images/rembrandtxmarvel-screenshot.jpg": {
+  "height": 2064,
+  "thumb": "images/rembrandtxmarvel-screenshot.jpg",
+  "thumbHeight": 2064,
+  "thumbWidth": 3012,
+  "width": 3012
+},
   "images/docklight-lobster-house-preview.jpg": {
     "height": 712,
     "thumb": "images/docklight-lobster-house-preview.jpg",

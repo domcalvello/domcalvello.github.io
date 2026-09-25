@@ -59,6 +59,13 @@ window.PORTFOLIO = {
     href: "https://domcalvello.github.io/JACKPOT-MUSIC/",
     type: "Website",
   },
+  {
+    title: "Rembrandt × Marvel",
+    subtitle: "A gallery of lost masterpieces featuring Marvel characters reimagined in the 17th century",
+    image: "images/rembrandtxmarvel-screenshot.jpg",
+    href: "https://domcalvello.github.io/REMBRANDTxMARVEL",
+    type: "Website",
+  },
 ],
     graphic: [
       { title: "The Elephant House", subtitle: "Lost Photos series", image: "images/lostphotos1.webp", technique: "AI-assisted photography / Experimental prompting" },
