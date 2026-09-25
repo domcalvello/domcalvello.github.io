@@ -25,6 +25,13 @@ window.PORTFOLIO = {
     type: "Website",
   },
   {
+    title: "Rembrandt × Marvel",
+    subtitle: "A gallery of lost masterpieces featuring Marvel characters",
+    image: "images/rembrandtxmarvel-screenshot.jpg",
+    href: "https://domcalvello.github.io/REMBRANDTxMARVEL",
+    type: "Website",
+  },     
+  {
     title: "Magnus Oculus",
     subtitle: "An experimental archive of impossible optics",
     image: "images/magnusoculus-screenshot.jpg",
@@ -57,13 +64,6 @@ window.PORTFOLIO = {
     subtitle: "Las Vegas based DJ & producer web hub",
     image: "images/webp5.webp",
     href: "https://domcalvello.github.io/JACKPOT-MUSIC/",
-    type: "Website",
-  },
-  {
-    title: "Rembrandt × Marvel",
-    subtitle: "A gallery of lost masterpieces featuring Marvel characters reimagined in the 17th century",
-    image: "images/rembrandtxmarvel-screenshot.jpg",
-    href: "https://domcalvello.github.io/REMBRANDTxMARVEL",
     type: "Website",
   },
 ],
