@@ -53,6 +53,20 @@ window.PORTFOLIO = {
     type: "Website",
   },
   {
+    title: "Cybersecurity 32X",
+    subtitle: "Interactive 32X-inspired cybersecurity webpage with integrated original concepts",
+    image: "images/cybersecurity32x-screenshot.jpg",
+    href: "https://domcalvello.github.io/CYBERSECURITY-32X/",
+    type: "Website",
+  },
+  {
+    title: "Grand Tech Access",
+    subtitle: "Interactive GTA-inspired cybersecurity webpage with integrated original concepts",
+    image: "images/GTA-screenshot.jpg",
+    href: "https://domcalvello.github.io/GTA/",
+    type: "Website",
+  },
+  {
     title: "M & J Stereo Receiver",
     subtitle: "Interactive browser-based music player with client defined playlist",
     image: "images/webp4.webp",

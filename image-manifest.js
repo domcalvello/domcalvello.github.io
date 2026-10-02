@@ -1058,6 +1058,20 @@ window.IMAGE_ASSETS = Object.freeze({
   "thumbWidth": 3012,
   "width": 3012
 },
+"images/cybersecurity32x-screenshot.jpg": {
+  "height": 1978,
+  "thumb": "images/cybersecurity32x-screenshot.jpg",
+  "thumbHeight": 1978,
+  "thumbWidth": 3040,
+  "width": 3040
+},
+"images/GTA-screenshot.jpg": {
+  "height": 1982,
+  "thumb": "images/GTA-screenshot.jpg",
+  "thumbHeight": 1982,
+  "thumbWidth": 3042,
+  "width": 3042
+},
   "images/docklight-lobster-house-preview.jpg": {
     "height": 712,
     "thumb": "images/docklight-lobster-house-preview.jpg",

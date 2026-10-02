@@ -940,7 +940,8 @@ h2 {
 }
 
 .slide-caption a.web-project-link {
-  font-size: clamp(13px, 1.05vw, 16px);
+  font-size: clamp(16px, 1.35vw, 21px);
+  line-height: 1.2;
 }
 
 .slide-caption a:hover { color: var(--cyan); }
@@ -1800,7 +1801,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
   .slide-media { height: min(70svh, 560px); }
   .slide-caption { grid-template-columns: 1fr; padding: 18px 4px 0; }
   .slide-caption > a { margin-top: 2px; }
-  .slide-caption a.web-project-link { font-size: clamp(13px, 3.6vw, 15px); }
+  .slide-caption a.web-project-link { font-size: clamp(16px, 4.4vw, 19px); }
   .carousel-shell { display: grid; grid-template-columns: var(--page-gutter) 48px 8px 48px minmax(0, 1fr); }
   .carousel-viewport { grid-column: 1 / -1; grid-row: 1; }
   .carousel-arrow { position: static; grid-row: 2; display: inline-grid; width: 48px; height: 48px; margin-top: 12px; transform: none; }
