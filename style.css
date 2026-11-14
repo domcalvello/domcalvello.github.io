@@ -1,4 +1,12 @@
 @font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Spin Cycle OT";
   src: url("fonts/spin-cycle-ot.otf") format("opentype");
   font-style: normal;
@@ -41,6 +49,11 @@
   --recovery-progress: 0;
   --restore-fill: 0%;
   --restore-x: 0px;
+  --hero-slice-image: url("images/hero/banner-1920.webp");
+  --deferred-corruption-image: url("images/backgrounds/image2-1354.webp");
+  --corruption-image: none;
+  --deferred-dark-cloud-image: url("images/backgrounds/dark-clouds-1920.webp");
+  --dark-cloud-image: none;
 }
 
 *,
@@ -318,7 +331,7 @@ button:focus-visible,
 }
 
 .hero-corruption {
-  background: url("images/image2.webp") center 45% / cover no-repeat;
+  background: var(--corruption-image) center 45% / cover no-repeat;
   opacity: clamp(0, calc((var(--corruption) - 0.16) * 1.45), 0.98);
   mix-blend-mode: normal;
   transform: translate3d(calc((var(--corruption) - 0.5) * -1.8%), 0, 0) scale(1.04);
@@ -328,6 +341,10 @@ button:focus-visible,
     100% 100%,
     calc(94% - var(--corruption) * 100%) 100%
   );
+}
+
+.hero-sequence.hero-corruption-ready {
+  --corruption-image: var(--deferred-corruption-image);
 }
 
 .hero-darken {
@@ -357,7 +374,7 @@ button:focus-visible,
   position: absolute;
   left: 0;
   width: 100%;
-  background: url("images/banner.webp") center / cover no-repeat;
+  background: var(--hero-slice-image) center / cover no-repeat;
   background-attachment: fixed;
   mix-blend-mode: screen;
   will-change: transform;
@@ -558,7 +575,7 @@ button:focus-visible,
     radial-gradient(circle at 72% 8%, rgba(255,52,52,.12), transparent 28%),
     linear-gradient(rgba(0, 247, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 46, 166, 0.03) 1px, transparent 1px),
-    url("images/dark_clouds.webp");
+    var(--dark-cloud-image);
   background-position: center top, center top, 0 0, 0 0, center top;
   background-size: 100% 100%, 100% 100%, 72px 72px, 72px 72px, 100% auto;
   background-blend-mode: normal, screen, normal, normal, screen;
@@ -606,8 +623,17 @@ button:focus-visible,
   position: absolute;
   inset: 56.25vw 0 0;
   content: "";
-  background: url("images/morebg.webp") center top / 100% auto repeat-y;
+  background: none center top / 100% auto repeat-y;
   opacity: .24;
+}
+
+.archive.archive-assets-ready,
+.recovery.recovery-assets-ready {
+  --dark-cloud-image: var(--deferred-dark-cloud-image);
+}
+
+.archive.archive-assets-ready .archive-grid::before {
+  background-image: url("images/morebg.webp");
 }
 
 .archive-content {
@@ -1420,7 +1446,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
       rgba(243, 240, 233, .72) 78%,
       var(--clean-bg) 100%
     ),
-    url("images/dark_clouds.webp") center 28% / cover no-repeat;
+    var(--dark-cloud-image) center 28% / cover no-repeat;
   background-blend-mode: normal, luminosity;
 }
 
@@ -1658,6 +1684,11 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
 .lightbox-next { right: 20px; }
 
 @media (max-width: 1000px) {
+  :root {
+    --hero-slice-image: url("images/hero/banner-1280.webp");
+    --deferred-corruption-image: url("images/backgrounds/image2-1024.webp");
+    --deferred-dark-cloud-image: url("images/backgrounds/dark-clouds-1280.webp");
+  }
   .desktop-nav { display: none; }
   .menu-toggle { display: block; }
   .archive-header { grid-template-columns: 1fr auto; }
@@ -1704,7 +1735,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
     z-index: 0;
     inset: -3%;
     content: "";
-    background: url("images/banner.webp") center / cover no-repeat;
+    background: var(--hero-slice-image) center / cover no-repeat;
     filter: blur(12px) saturate(.85);
     transform: scale(1.08);
   }
@@ -1715,6 +1746,7 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
     -webkit-mask-image: linear-gradient(to bottom, transparent 4%, #000 22%, #000 78%, transparent 96%);
     mask-image: linear-gradient(to bottom, transparent 4%, #000 22%, #000 78%, transparent 96%);
   }
+  .hero-slices span { background-attachment: scroll; }
   .hero-sequence.is-corruption-complete .hero-clean,
   .hero-sequence.is-corruption-complete .hero-slices {
     opacity: 0;
@@ -1835,6 +1867,14 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
   .lightbox-arrow { top: auto; bottom: 28px; transform: none; }
   .lightbox-prev { left: auto; right: 84px; }
   .lightbox-next { right: 20px; }
+}
+
+@media (max-width: 559px) {
+  :root {
+    --hero-slice-image: url("images/hero/banner-640.webp");
+    --deferred-corruption-image: url("images/backgrounds/image2-640.webp");
+    --deferred-dark-cloud-image: url("images/backgrounds/dark-clouds-640.webp");
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

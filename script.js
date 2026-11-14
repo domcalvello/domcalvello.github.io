@@ -3,7 +3,12 @@
 (() => {
   const data = window.PORTFOLIO;
   if (!data) return;
-  const imageAssets = window.IMAGE_ASSETS || {};
+  const imageAssets = window.IMAGE_ASSETS;
+  const missingAssets = new Set();
+
+  if (!imageAssets) {
+    console.warn("[DOM:CLOUD] image-manifest.js did not load; portfolio previews will use original images.");
+  }
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const header = document.getElementById("siteHeader");
@@ -30,14 +35,26 @@
       '"': "&quot;",
     })[char]);
 
-  const getImageAsset = (source) =>
-    imageAssets[source] || {
+  const getImageAsset = (source) => {
+    const asset = imageAssets?.[source];
+    if (asset) return asset;
+    if (!missingAssets.has(source)) {
+      missingAssets.add(source);
+      console.warn(`[DOM:CLOUD] Missing image manifest entry for ${source}; using the original as a fallback.`);
+    }
+    return {
       thumb: source,
       width: 1,
       height: 1,
       thumbWidth: 1,
       thumbHeight: 1,
     };
+  };
+
+  const getImageSrcset = (asset) =>
+    asset.small && asset.smallWidth
+      ? `${asset.small} ${asset.smallWidth}w, ${asset.thumb} ${asset.thumbWidth}w`
+      : "";
 
   const revealArchiveAssets = () => {
     archive?.classList.add("archive-assets-ready");
@@ -67,7 +84,7 @@
         if (entry.target === recovery) revealRecoveryAssets();
         observer.unobserve(entry.target);
       });
-    }, { rootMargin: "90% 0px" });
+    }, { rootMargin: "50% 0px" });
 
     if (archive) observer.observe(archive);
     if (recovery) observer.observe(recovery);
@@ -202,6 +219,7 @@
     const mobileCorruption = window.matchMedia("(max-width: 767px)");
     const heroStatusText = hero.querySelector(".hero-kicker > span");
     let corruptionComplete = false;
+    let corruptionAssetsReady = false;
     let ticking = false;
 
     const setCorruptionComplete = (nextState) => {
@@ -225,6 +243,11 @@
       const progress = reducedMotion.matches
         ? clamp(-rect.top / Math.max(1, total * 0.65))
         : clamp(-rect.top / total);
+
+      if (!corruptionAssetsReady && progress > 0.01) {
+        corruptionAssetsReady = true;
+        hero.classList.add("hero-corruption-ready");
+      }
 
       document.documentElement.style.setProperty(
         "--corruption",
@@ -794,11 +817,25 @@
       })
       .join("");
 
-    carouselRoot
-      .querySelectorAll(".portfolio-carousel")
-      .forEach((element) => {
-        new Carousel(element);
+    const carousels = [...carouselRoot.querySelectorAll(".portfolio-carousel")]
+      .map((element) => new Carousel(element));
+
+    if (!("IntersectionObserver" in window)) {
+      carousels.forEach((carousel) => carousel.activateMedia());
+    } else {
+      const mediaObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.__carousel?.activateMedia();
+          mediaObserver.unobserve(entry.target);
+        });
+      }, { rootMargin: "75% 0px", threshold: 0.01 });
+
+      carousels.forEach((carousel) => {
+        carousel.element.__carousel = carousel;
+        mediaObserver.observe(carousel.element);
       });
+    }
 
     initMediaPreviews();
   }
@@ -829,6 +866,7 @@
       category === "graphic"
     ) {
       const asset = getImageAsset(item.image);
+      const srcset = getImageSrcset(asset);
       media = `
         <button
           class="slide-media image-trigger is-loading"
@@ -840,6 +878,7 @@
         >
           <img
             data-src="${escapeHTML(asset.thumb)}"
+            ${srcset ? `data-srcset="${escapeHTML(srcset)}" data-sizes="(max-width: 767px) 88vw, (max-width: 1000px) 78vw, 1120px"` : ""}
             data-fallback="${escapeHTML(item.image)}"
             alt="${title}"
             width="${asset.thumbWidth}"
@@ -1000,6 +1039,7 @@
         );
 
       this.index = 0;
+      this.mediaActive = false;
       this.scrollTimer = 0;
       this.glitchTimer = 0;
       this.glitchToken = 0;
@@ -1124,6 +1164,8 @@
         };
 
         image.loading = eager ? "eager" : "lazy";
+        if (image.dataset.sizes) image.sizes = image.dataset.sizes;
+        if (image.dataset.srcset) image.srcset = image.dataset.srcset;
         image.addEventListener("load", finish, { once: true });
         image.addEventListener("error", () => {
           const fallback = image.dataset.fallback;
@@ -1143,6 +1185,8 @@
         }, { once: true });
         image.src = source;
         image.removeAttribute("data-src");
+        image.removeAttribute("data-srcset");
+        image.removeAttribute("data-sizes");
         media?.style.setProperty(
           "--slide-bg",
           `url("${source.replace(/["\\]/g, "\\$&")}")`
@@ -1171,6 +1215,12 @@
       this.loadSlideMedia(this.index + 1);
     }
 
+    activateMedia() {
+      if (this.mediaActive) return;
+      this.mediaActive = true;
+      this.loadNeighborhood();
+    }
+
     update(deliberate) {
       this.slides.forEach((slide, index) => {
         const active = index === this.index;
@@ -1185,7 +1235,7 @@
         slide.toggleAttribute("inert", !active);
       });
 
-      this.loadNeighborhood();
+      if (this.mediaActive) this.loadNeighborhood();
 
       this.prev.disabled =
         this.index === 0;

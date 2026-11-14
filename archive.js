@@ -2,7 +2,8 @@
 
 (() => {
   const source = window.PORTFOLIO;
-  const imageAssets = window.IMAGE_ASSETS || {};
+  const imageAssets = window.IMAGE_ASSETS;
+  const missingAssets = new Set();
   const gallery = document.getElementById("archiveGrid");
   const count = document.getElementById("resultCount");
   const familySelect = document.getElementById("familySelect");
@@ -13,13 +14,30 @@
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
   })[char]);
   const pad = (value) => String(value).padStart(2, "0");
-  const getImageAsset = (path) => imageAssets[path] || {
-    thumb: path,
-    width: 1,
-    height: 1,
-    thumbWidth: 1,
-    thumbHeight: 1,
+  if (!imageAssets) {
+    console.warn("[DOM:CLOUD] image-manifest.js did not load; archive previews will use original images.");
+  }
+
+  const getImageAsset = (path) => {
+    const asset = imageAssets?.[path];
+    if (asset) return asset;
+    if (!missingAssets.has(path)) {
+      missingAssets.add(path);
+      console.warn(`[DOM:CLOUD] Missing image manifest entry for ${path}; using the original as a fallback.`);
+    }
+    return {
+      thumb: path,
+      width: 1,
+      height: 1,
+      thumbWidth: 1,
+      thumbHeight: 1,
+    };
   };
+
+  const getImageSrcset = (asset) =>
+    asset.small && asset.smallWidth
+      ? `${asset.small} ${asset.smallWidth}w, ${asset.thumb} ${asset.thumbWidth}w`
+      : "";
 
   const aiItems = source.archive.aiFamilies.flatMap((family) => {
     const start = Number.isInteger(family.start) ? family.start : 1;
@@ -78,6 +96,8 @@
     }
 
     image.dataset.fallbackTried = "true";
+    image.removeAttribute("srcset");
+    image.removeAttribute("sizes");
     image.addEventListener("load", () => finishThumbnail(image), { once: true });
     image.addEventListener("error", () => finishThumbnail(image), { once: true });
     image.src = fallback;
@@ -86,10 +106,14 @@
   const loadThumbnail = (image) => {
     const path = image.dataset.src;
     if (!path) return;
+    if (image.dataset.sizes) image.sizes = image.dataset.sizes;
+    if (image.dataset.srcset) image.srcset = image.dataset.srcset;
     image.addEventListener("load", () => finishThumbnail(image), { once: true });
     image.addEventListener("error", () => recoverThumbnail(image), { once: true });
     image.src = path;
     image.removeAttribute("data-src");
+    image.removeAttribute("data-srcset");
+    image.removeAttribute("data-sizes");
     if (image.complete && image.naturalWidth) finishThumbnail(image);
   };
 
@@ -121,7 +145,10 @@
         loadThumbnail(entry.target);
         thumbnailObserver?.unobserve(entry.target);
       });
-    }, { rootMargin: "600px 0px", threshold: 0.01 });
+    }, {
+      rootMargin: window.matchMedia("(max-width: 559px)").matches ? "250px 0px" : "500px 0px",
+      threshold: 0.01,
+    });
 
     pending.forEach((image) => thumbnailObserver.observe(image));
   };
@@ -137,10 +164,15 @@
       const title = escapeHTML(item.title);
       const familyTitle = escapeHTML(item.familyTitle);
       const asset = getImageAsset(item.image);
-      const eager = index < 8;
+      const srcset = getImageSrcset(asset);
+      const sizes = item.category === "web"
+        ? "(max-width: 559px) calc(100vw - 36px), (max-width: 899px) calc(100vw - 8vw), (max-width: 1399px) 66vw, 50vw"
+        : "(max-width: 559px) calc(100vw - 36px), (max-width: 899px) 46vw, (max-width: 1399px) 31vw, 23vw";
+      const eagerLimit = window.matchMedia("(max-width: 559px)").matches ? 1 : 2;
+      const eager = index < eagerLimit;
       const imageAttributes = eager
-        ? `src="${escapeHTML(asset.thumb)}" loading="eager"`
-        : `data-src="${escapeHTML(asset.thumb)}" loading="lazy"`;
+        ? `src="${escapeHTML(asset.thumb)}"${srcset ? ` srcset="${escapeHTML(srcset)}" sizes="${sizes}"` : ""} loading="eager"`
+        : `data-src="${escapeHTML(asset.thumb)}"${srcset ? ` data-srcset="${escapeHTML(srcset)}" data-sizes="${sizes}"` : ""} loading="lazy"`;
       const media = item.category === "web"
         ? `<a class="card-media is-loading" href="${escapeHTML(item.href)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${title} live website">
             <img ${imageAttributes} data-fallback="${escapeHTML(item.image)}" alt="${title}" width="${asset.thumbWidth}" height="${asset.thumbHeight}" decoding="async" />

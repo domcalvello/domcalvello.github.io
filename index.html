@@ -18,15 +18,17 @@
     <meta name="twitter:title" content="Domenick Calvello — DOM:CLOUD" />
     <meta name="twitter:description" content="Digital designer and front-end developer. Enter the archive." />
     <meta name="twitter:image" content="https://domcalvello.github.io/images/banner.webp" />
-    <link rel="icon" href="images/favicon.ico" sizes="any" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;600;700&amp;display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="fonts/manrope-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link rel="stylesheet" href="style.css" />
     <script src="portfolio-data.js" defer></script>
+    <script src="image-manifest.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body data-page="home">
@@ -66,7 +68,9 @@
         <div class="hero-sticky">
           <img
             class="hero-layer hero-clean"
-            src="images/banner.webp"
+            src="images/hero/banner-1280.webp"
+            srcset="images/hero/banner-640.webp 640w, images/hero/banner-1280.webp 1280w, images/hero/banner-1920.webp 1920w, images/hero/banner-2560.webp 2560w"
+            sizes="100vw"
             alt="DOM:CLOUD above a field of clouds at sunrise"
             width="1672"
             height="941"
@@ -111,7 +115,7 @@
           <header class="archive-header">
             <div class="archive-heading-block">
               <div class="archive-branding">
-                <img class="corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="Corrupted DOM:CLOUD logo" width="2390" height="1350" />
+                <img class="corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted-480.webp" alt="Corrupted DOM:CLOUD logo" width="480" height="271" loading="lazy" decoding="async" />
                 <p class="eyebrow">The Archive / Selected Work</p>
               </div>
               <h1 class="glitch-title" id="archiveTitle" data-text="SELECTED WORK" aria-label="Selected Work">
@@ -150,7 +154,7 @@
               <h2>VIEW THE EXTENDED CLOUD.</h2>
               <p>Open the complete visual archive and filter the full collection by category.</p>
             </div>
-            <img class="section-corrupt-logo" src="images/domcloud_logo_corrupted.webp" alt="" width="2390" height="1350" loading="lazy" decoding="async" />
+            <img class="section-corrupt-logo" src="images/thumbs/ui/domcloud-logo-corrupted-480.webp" alt="" width="480" height="271" loading="lazy" decoding="async" />
             <a class="button button-outline" href="archive.html">View full archive <span>↗</span></a>
           </div>
         </div>
@@ -238,10 +242,12 @@
             <p class="portrait-status status-indicator"><span>Status: Online</span><i aria-hidden="true"></i></p>
             <div class="window-bar"><span>DOM_PROFILE.IMG</span><i></i><i></i><i></i></div>
             <img
-              src="images/dom-microsoft-1998-bitmap-portrait.png"
+              src="images/profile/dom-microsoft-1998-bitmap-portrait-960.webp"
+              srcset="images/profile/dom-microsoft-1998-bitmap-portrait-640.webp 640w, images/profile/dom-microsoft-1998-bitmap-portrait-960.webp 960w, images/profile/dom-microsoft-1998-bitmap-portrait-1440.webp 1440w"
+              sizes="(max-width: 1000px) calc(100vw - 40px), 42vw"
               alt="Bitmap portrait of Domenick Calvello"
-              width="1324"
-              height="1188"
+              width="960"
+              height="847"
               loading="lazy"
               decoding="async"
             />

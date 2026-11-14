@@ -1,4 +1,5 @@
 .archive-page {
+  --dark-cloud-image: var(--deferred-dark-cloud-image);
   min-height: 100svh;
   color: var(--archive-text);
   background:
