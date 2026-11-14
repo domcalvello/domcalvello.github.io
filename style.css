@@ -1802,7 +1802,8 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
   .carousel-heading .section-corrupt-logo { grid-column: 2; grid-row: 1; align-self: center; width: clamp(86px, 25vw, 126px); }
   .carousel-heading-status { align-self: end; font-size: 8px; }
   .carousel-track { gap: 14px; padding: 26px 6vw; }
-  .carousel-slide { flex-basis: 88vw; }
+  .carousel-track { scroll-behavior: auto; }
+  .carousel-slide { flex-basis: 88vw; scroll-snap-stop: normal; transition-duration: 180ms; }
   .slide-media { height: min(70svh, 560px); }
   .slide-caption { grid-template-columns: 1fr; padding: 18px 4px 0; }
   .slide-caption > a { margin-top: 2px; }
@@ -1863,10 +1864,14 @@ body.restore-dragging { cursor: grabbing; user-select: none; }
   .social-links { flex-wrap: wrap; gap: 17px 23px; }
   .footer-cloud-logo { grid-column: 2; grid-row: 1; }
   .footer-status { grid-column: 1 / -1; width: 100%; justify-content: space-between; }
-  .lightbox { padding: 74px 20px 28px; }
-  .lightbox-arrow { top: auto; bottom: 28px; transform: none; }
-  .lightbox-prev { left: auto; right: 84px; }
-  .lightbox-next { right: 20px; }
+  .lightbox {
+    padding: max(74px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
+  }
+  .lightbox figure { grid-template-rows: minmax(0, 1fr) auto; }
+  .lightbox figcaption { min-height: 72px; padding: 14px 8px 0; }
+  .lightbox-arrow { top: 50%; bottom: auto; width: 46px; height: 54px; transform: translateY(-50%); }
+  .lightbox-prev { right: auto; left: 12px; margin: 0; }
+  .lightbox-next { right: 12px; margin: 0; }
 }
 
 @media (max-width: 559px) {

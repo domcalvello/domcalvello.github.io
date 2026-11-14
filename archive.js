@@ -8,6 +8,7 @@
   const count = document.getElementById("resultCount");
   const familySelect = document.getElementById("familySelect");
   const filterButtons = [...document.querySelectorAll("[data-filter]")];
+  const mobileLightbox = window.matchMedia("(max-width: 767px)");
   if (!source || !gallery || !count || !familySelect) return;
 
   const escapeHTML = (value = "") => value.replace(/[&<>'"]/g, (char) => ({
@@ -227,9 +228,10 @@
       const item = visibleItems[index];
       if (!item || item.category === "web") return;
       const asset = getImageAsset(item.image);
-      image.width = asset.width;
-      image.height = asset.height;
-      image.src = item.image;
+      const useDisplayAsset = mobileLightbox.matches;
+      image.width = useDisplayAsset ? asset.thumbWidth : asset.width;
+      image.height = useDisplayAsset ? asset.thumbHeight : asset.height;
+      image.src = useDisplayAsset ? asset.thumb : item.image;
       image.alt = item.title;
       title.textContent = item.title;
       meta.textContent = `${item.familyTitle} / ${pad(index + 1)} of ${pad(visibleItems.length)}`;

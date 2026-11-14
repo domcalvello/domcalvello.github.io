@@ -11,6 +11,8 @@
   }
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const touchNavigation = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+  const mobileLightbox = window.matchMedia("(max-width: 767px)");
   const header = document.getElementById("siteHeader");
   const hero = document.querySelector(".hero-sequence");
   const archive = document.getElementById("selected-work");
@@ -1140,7 +1142,7 @@
       this.index = nextIndex;
 
       this.slides[this.index].scrollIntoView({
-        behavior: reducedMotion.matches
+        behavior: reducedMotion.matches || touchNavigation.matches
           ? "auto"
           : "smooth",
         block: "nearest",
@@ -1212,7 +1214,7 @@
     loadNeighborhood() {
       this.loadSlideMedia(this.index, true);
       this.loadSlideMedia(this.index - 1);
-      this.loadSlideMedia(this.index + 1);
+      this.loadSlideMedia(this.index + 1, touchNavigation.matches);
     }
 
     activateMedia() {
@@ -1534,11 +1536,13 @@
         trigger.dataset.image
       );
 
-      image.width = asset.width;
-      image.height = asset.height;
+      const useDisplayAsset = mobileLightbox.matches;
+
+      image.width = useDisplayAsset ? asset.thumbWidth : asset.width;
+      image.height = useDisplayAsset ? asset.thumbHeight : asset.height;
 
       image.src =
-        trigger.dataset.image;
+        useDisplayAsset ? asset.thumb : trigger.dataset.image;
 
       image.alt =
         trigger.dataset.title;
